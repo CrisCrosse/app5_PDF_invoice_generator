@@ -39,7 +39,7 @@ for filepath in filepaths:
     pdf.cell(w=30, h=12, txt=columns_header[3], border=1)
     pdf.cell(w=30, h=12, txt=columns_header[4], border=1, ln=1)
 
-    # add row
+    # add rows
     for index, row in df.iterrows():
         pdf.set_font(family="Times", size=12)
         pdf.set_text_color(80, 80, 80)
@@ -48,5 +48,25 @@ for filepath in filepaths:
         pdf.cell(w=40, h=12, txt=str(row["amount_purchased"]), border=1)
         pdf.cell(w=30, h=12, txt=str(row["price_per_unit"]), border=1)
         pdf.cell(w=30, h=12, txt=str(row["total_price"]), border=1, ln=1)
+
+    # add mostly empty final total price row
+    total_sum = sum(df["total_price"])
+    pdf.set_font(family="Times", size=12)
+    pdf.set_text_color(80, 80, 80)
+    pdf.cell(w=30, h=12, txt="", border=1)
+    pdf.cell(w=70, h=12, txt="", border=1)
+    pdf.cell(w=40, h=12, txt="", border=1)
+    pdf.cell(w=30, h=12, txt="", border=1)
+    pdf.cell(w=30, h=12, txt=str(total_sum), border=1, ln=1)
+
+    # add total sum sentence
+    pdf.set_font(family="Times", size=20, style="B")
+    pdf.set_text_color(0, 0, 0)
+    pdf.cell(w=30, h=20, txt=f"Your total price is {total_sum}", ln=1)
+
+    # add company name and logo
+    pdf.set_font(family="Times", size=20, style="B")
+    pdf.cell(w=90, h=20, txt=f"Chris Rossell Python Services")
+    pdf.image("pythonhow.png", w=20)
 
     pdf.output(f"PDFs/Invoice_{filename}.pdf")
